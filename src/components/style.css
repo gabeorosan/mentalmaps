@@ -1,0 +1,29 @@
+:root{
+    margin: 0;
+    padding: 0;
+}
+.input-container{
+    width: 100px;
+    position: relative;
+}
+.input{
+    width: 100px;
+}
+.adopt-button{
+    border: none;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    height: 8px;
+    width: 8px;
+    padding: 0;
+    margin: 0;
+    background: none;
+}
+.dot {
+    height: 8px;
+    width: 8px;
+    background-color: #000;
+    border-radius: 50%;
+    display: inline-block;
+  }
