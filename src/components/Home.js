@@ -1,20 +1,19 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Input from './Input'
 import { v4 as uuid } from 'uuid';
-const Home = () => {
-    const [notes, setNotes] = useState([])
-    const createNote = () => {
-        setNotes([...notes, {text: '', connections: [], id: uuid()}])
-    }
+import {connect, useDispatch} from 'react-redux'
+import {createNote, saveNotes, getNotes} from '../actions/notes'
+import Notes from './Notes';
+const Home = ({notes}) => {
+    const dispatch = useDispatch()
+    
     return (
         <div>
-            <button onClick={() => createNote()}>
-                New Note
-            </button>
-            {notes.map(n => <Input key={uuid()} noteInfo={n}/>)}
-            
+            <Notes/>
         </div>
     )
 }
-
-export default Home
+function mapStateToProps(state, ownProps) {
+    return {notes: state.notes}
+}
+export default connect(mapStateToProps)(Home)

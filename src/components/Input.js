@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import Draggable from 'react-draggable'
 import './style.css'
-import {Line} from 'react-lineto';
-const Input = ({noteInfo}) => {
-    const [note, setNote] = useState(noteInfo)
+import {Line, LineTo} from 'react-lineto';
+import {useDispatch} from 'react-redux'
+const Input = ({note, onChange}) => {
     const [adopting, setAdopting] = useState(false)
     const [line, setLine] = useState({x: 0, y: 0, x1: 0, y1: 0})
+    const dispatch = useDispatch()
     useEffect(() => {
         if(adopting){
             document.addEventListener("mousemove", trackMouse)
@@ -51,7 +52,7 @@ const Input = ({noteInfo}) => {
             <Draggable>
                 <div>
                 <div className='input-container'>
-                    <input className='input' type='text'/>
+                    <input className='input' type='text' value={note.text} onChange={(e) => onChange({...note, text: e.target.value})}/>
                     <button className='adopt-button' onClick={(e) => setAdopting(true)}>
                         <span className="dot" id = {note.id}></span>
                     </button>
@@ -62,7 +63,6 @@ const Input = ({noteInfo}) => {
                 
                 </div>
             </Draggable>
-        
         
     )
 }
