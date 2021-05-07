@@ -3,9 +3,12 @@ import Draggable from 'react-draggable'
 import './style.css'
 import {Line, LineTo} from 'react-lineto';
 import {useDispatch} from 'react-redux'
-const Input = ({note, onChange}) => {
+import { deleteNote } from '../actions/notes';
+const Note = ({note, saveNotes}) => {
+    const [text, setText] = useState(note.text)
     const [adopting, setAdopting] = useState(false)
-    const [line, setLine] = useState({x: 0, y: 0, x1: 0, y1: 0})
+    const [position, setPosition] = useState({x: note.position.x - 8, y: note.position.y - 29})
+    const [line, setLine] = useState({x: position.x, y: position.y, x1: 0, y1: 0})
     const dispatch = useDispatch()
     useEffect(() => {
         if(adopting){
@@ -16,6 +19,10 @@ const Input = ({note, onChange}) => {
             document.removeEventListener("mousedown", checkAdopt)
         }
     }, [adopting])
+    const removeNote = () => {
+        saveNotes()
+        dispatch(deleteNote(note.id))
+    }
     const checkAdopt = (event) => {
         console.log(event.target)
         setAdopting(false)
@@ -49,22 +56,24 @@ const Input = ({note, onChange}) => {
     }
     // document.addEventListener('click', setAdopting(false))
     return (
-            <Draggable>
-                <div>
-                <div className='input-container'>
-                    <input className='input' type='text' value={note.text} onChange={(e) => onChange({...note, text: e.target.value})}/>
-                    <button className='adopt-button' onClick={(e) => setAdopting(true)}>
-                        <span className="dot" id = {note.id}></span>
-                    </button>
-                </div>
-                {adopting && <div className='line'>
-                    <Line x0={line.x} y0={line.y} x1={line.x1} y1={line.y1} />
-                </div> }
+        <div className='absolute'>
+            <Draggable className='absolute' onStop = {(e) => setPosition({x: e.clientX, y: e.clientY})} defaultPosition={position}>
+                <div className='container'id = {note.id}>
+                    <div className='input-container'>
+                        <input className='input'  value={text} onChange={(e) => setText(e.target.value)}/>
+                        <button className='adopt-button' onClick={(e) => setAdopting(true)}>
+                            <span className="dot" ></span>
+                        </button>
+                        <button onClick={() => removeNote()} className='delete-button'>delete</button>
+                    </div>
+                    {adopting && <div className='line'>
+                        <Line x0={line.x} y0={line.y} x1={line.x1} y1={line.y1} />
+                    </div> }
                 
                 </div>
             </Draggable>
-        
+        </div>
     )
 }
 
-export default Input
+export default Note

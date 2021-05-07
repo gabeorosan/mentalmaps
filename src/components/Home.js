@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import Input from './Input'
+import Input from './Note'
 import { v4 as uuid } from 'uuid';
 import {connect, useDispatch} from 'react-redux'
 import {createNote, saveNotes, getNotes} from '../actions/notes'
@@ -8,7 +8,7 @@ const Home = ({notes}) => {
     const dispatch = useDispatch()
     
     return (
-        <div>
+        <div className='home-container'>
             <Notes/>
         </div>
     )

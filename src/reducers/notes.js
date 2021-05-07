@@ -4,11 +4,14 @@ export default (notes = [], action) => {
         case 'GET_NOTES':
             return action.payload
         case "CREATE_NOTE":
-            return [...notes, {text: '', connections: {}, id: uuid()}]
+            return [...notes, action.payload]
         case 'UPDATE_NOTE':
             return notes.filter(n => n.id === action.payload.id ? action.payload : n)
+        case 'UPDATE_NOTES':
+            localStorage.setItem('notes', JSON.stringify(action.payload))
+            return action.payload
         case 'DELETE_NOTE':
-            return notes.filter(n => n.id !== action.payload.id)
+            return notes.filter(n => n.id !== action.payload)
         case "SAVE_NOTES":
             localStorage.setItem('notes', JSON.stringify({notes}))
             return notes
